@@ -179,6 +179,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { supabase } from '../supabase' // Ensure this is imported!
+import { logActivity } from '../utils/logger'
 
 const currentStep = ref(1)
 const isUploading = ref(false)
@@ -311,6 +312,7 @@ const saveToSupabase = async () => {
     if (dbError) throw dbError
 
     alert("Document & PDF Saved Successfully to " + folderPath)
+    await logActivity('UPLOAD', `Uploaded document: ${namaNaskah.value}`)
     
     // Reset form
     currentStep.value = 1

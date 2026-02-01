@@ -89,6 +89,7 @@
 import { ref } from 'vue'
 import { supabase } from '../supabase'
 import { useRouter } from 'vue-router'
+import { logActivity } from '../utils/logger'
 
 const username = ref('')
 const password = ref('')
@@ -113,7 +114,7 @@ const handleLogin = async () => {
         password: password.value
       })
       if (error) throw error
-      
+      await logActivity('LOGIN', 'User logged into the system')
       // If successful, go to dashboard
       router.push('/')
     }else{

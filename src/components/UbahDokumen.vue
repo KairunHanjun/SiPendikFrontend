@@ -75,6 +75,7 @@
 // UbahDokumen.vue
 import { ref, onMounted, reactive, watch } from 'vue' // Add 'watch'
 import { supabase } from '../supabase'
+import { logActivity } from '../utils/logger'
 // Remove 'useRoute', 'useRouter' imports if you don't need them elsewhere
 
 // 1. Accept the ID from Dashboard
@@ -131,6 +132,7 @@ const updateDocument = async () => {
     if (error) throw error
 
     alert("Document updated successfully!")
+    await logActivity('UPDATE', `Updated metadata for: ${form.nama_naskah}`)
     emit('saved') // Tell Dashboard to switch back
 
   } catch (err) {

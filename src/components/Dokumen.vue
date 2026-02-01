@@ -142,6 +142,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { supabase } from '../supabase'
+import { logActivity } from '../utils/logger'
 
 const emit = defineEmits(['edit'])
 
@@ -252,6 +253,7 @@ const deleteDokumen = async (doc) => {
     // Refresh to update pagination counts correctly
     fetchDocuments()
     alert('Deleted successfully')
+    await logActivity('DELETE', `Deleted document: ${doc.nama_naskah}`)
   } catch (error) {
     alert('Error deleting: ' + error.message)
   }
