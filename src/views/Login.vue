@@ -24,7 +24,7 @@
     <div class="w-full md:w-5/12 bg-[#5578AC] flex flex-col justify-center items-center p-8 md:p-12 text-white shadow-2xl z-10">
       
       <div class="w-full max-w-sm">
-        <h2 class="text-4xl font-bold text-center mb-10">Login</h2>
+        <h2 class="text-4xl font-bold text-center mb-10">{{ resetPassword ? "Reset Password" : "Login" }}</h2>
 
         <form @submit.prevent="handleLogin">
           <div class="mb-5 relative">
@@ -34,40 +34,51 @@
               </svg>
             </div>
             <input 
-              type="text" 
-              placeholder="Username" 
+              type="email" 
+              v-model="username"
+              placeholder="Email" 
               class="w-full py-4 pl-12 pr-4 bg-white rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8AA6CF] shadow-md"
             />
           </div>
 
-          <div class="mb-5 relative">
+          <div v-if="!resetPassword" class="mb-5 relative">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
             <input 
+            v-model="password"
               type="password" 
               placeholder="Password" 
               class="w-full py-4 pl-12 pr-4 bg-white rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8AA6CF] shadow-md"
             />
           </div>
 
+          <div v-if="errorMessage" class="text-red-500 text-sm text-center">
+            {{ errorMessage }}
+          </div>
+
+          <div v-if="message && !errorMessage && resetPassword" class=" text-green-300 text-[0.9rem] text-center">
+            {{ message }}
+          </div>
+
           <div class="flex items-center justify-between mb-8 text-sm">
-            <label class="flex items-center cursor-pointer select-none">
+            <!-- <label class="flex items-center cursor-pointer select-none">
               <div class="relative">
                 <input type="checkbox" class="sr-only" v-model="rememberMe" />
                 <div class="block w-10 h-6 rounded-full transition-colors duration-300" :class="{ 'bg-blue-300': rememberMe, 'bg-gray-300' : !rememberMe }"></div>
                 <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-300" :class="{ 'translate-x-4': rememberMe }"></div>
               </div>
               <span class="ml-3 font-medium">Remember me</span>
-            </label>
-            <a href="#" class="hover:text-blue-200 transition-colors">Forget Password</a>
+            </label> -->
+            <a href="#" @click="resetPW" class="hover:text-blue-200 transition-colors">{{ resetPassword ? "Kembali ke Login" : "Forget Password" }}</a>
           </div>
 
-          <button type="submit" class="w-full py-3.5 bg-[#96B5DE] rounded-full text-xl font-bold text-[#1E3A5F] shadow-lg hover:bg-[#A6C3E9] transform active:scale-95 transition-all duration-200">
-            Sign In
+          <button v-if="!loadingLogin" type="submit" class="w-full py-3.5 bg-[#96B5DE] rounded-full text-xl font-bold text-[#1E3A5F] shadow-lg hover:bg-[#A6C3E9] transform active:scale-95 transition-all duration-200">
+            {{ resetPassword ? "Reset Password" : "Sign In" }}
           </button>
+
         </form>
       </div>
     </div>
@@ -76,13 +87,46 @@
 
 <script setup>
 import { ref } from 'vue'
+import { supabase } from '../supabase'
 import { useRouter } from 'vue-router'
+
+const username = ref('')
+const password = ref('')
+const errorMessage = ref('')
+const message = ref('')
+const loadingLogin = ref(false)
+const resetPassword = ref(false)
 
 const rememberMe = ref(false)
 const router = useRouter()
-const handleLogin = () => {
-  console.log("Logged in!")
-  router.push('/dashboard')
+const resetPW = () => {
+  resetPassword.value = !resetPassword.value;
+  message.value = null;
+}
+const handleLogin = async () => {
+  try{
+    loadingLogin.value=true;
+    if (!resetPassword.value) {
+      console.log("Login-in");
+      const { error } = await supabase.auth.signInWithPassword({
+        email: username.value,
+        password: password.value
+      })
+      if (error) throw error
+      
+      // If successful, go to dashboard
+      router.push('/')
+    }else{
+      console.log("Reset-in");
+      const { error } = await supabase.auth.resetPasswordForEmail(username.value);
+      if (error) alert(error.message)
+      else message.value = "Link reset sudah dikirim ke email anda jika anda mendaftar menggunakan email tersebut, silahkan dicek kembali"
+    }
+  }catch(error){
+    errorMessage.value = error.message
+  }finally{
+    loadingLogin.value = false;
+  }
 }
 </script>
 

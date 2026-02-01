@@ -1,128 +1,215 @@
 <template>
-    <main class="flex-1 overflow-y-auto p-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-          <div class="bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl p-6 shadow-lg text-white flex items-center relative overflow-hidden">
-            <div class="flex-1 z-10">
-              <h3 class="text-lg font-medium text-blue-100 mb-2">Arsip Masuk Hari Ini</h3>
-              <p class="text-4xl font-bold">28</p>
+  <div class="animate-fade-in space-y-8">
+    
+    <div class="bg-gradient-to-r from-blue-800 to-blue-600 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+      <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
+      <div class="absolute bottom-0 right-20 -mb-20 w-40 h-40 bg-white opacity-10 rounded-full"></div>
+      
+      <div class="relative z-10">
+        <h1 class="text-3xl font-bold mb-2">Selamat Datang, {{ userEmail }}</h1>
+        <p class="text-blue-100 opacity-90">Sistem Arsip Digital Kelurahan Kedoya Selatan</p>
+        
+        <div class="mt-8 flex gap-4">
+           <div class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg text-sm font-semibold border border-white/30">
+              📅 {{ currentDate }}
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
+        <div class="p-4 bg-blue-50 text-blue-600 rounded-full mr-4">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 font-bold uppercase">Total Dokumen</p>
+          <h3 class="text-3xl font-bold text-gray-800">{{ stats.total }}</h3>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
+        <div class="p-4 bg-green-50 text-green-600 rounded-full mr-4">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 font-bold uppercase">Bulan Ini</p>
+          <h3 class="text-3xl font-bold text-gray-800">{{ stats.thisMonth }}</h3>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
+        <div class="p-4 bg-purple-50 text-purple-600 rounded-full mr-4">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 font-bold uppercase">Kategori</p>
+          <h3 class="text-3xl font-bold text-gray-800">{{ stats.categories }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+          <h3 class="font-bold text-gray-800">Baru Saja Diupload</h3>
+        </div>
+        
+        <div v-if="loading" class="p-8 text-center text-gray-400">Loading activity...</div>
+        
+        <div v-else class="divide-y divide-gray-50">
+          <div v-for="doc in recentDocs" :key="doc.id" class="p-4 hover:bg-gray-50 transition flex items-center">
+            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mr-4 shrink-0">
+               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             </div>
-            <div class="p-4 bg-white/20 rounded-full z-11">
-               <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+            
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-bold text-gray-900 truncate">{{ doc.nama_naskah }}</p>
+              <p class="text-xs text-gray-500 truncate">{{ doc.nomor_naskah || 'No Number' }} &bull; {{ doc.jenis_naskah }}</p>
             </div>
-            <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-white/10 rounded-full"></div>
+            
+            <div class="text-right pl-4">
+              <span class="text-xs font-semibold text-gray-400 block">{{ timeAgo(doc.created_at) }}</span>
+            </div>
           </div>
-          <div class="bg-linear-to-br from-indigo-600 to-indigo-700 rounded-2xl p-6 shadow-lg text-white flex items-center relative overflow-hidden">
-            <div class="flex-1 z-10">
-              <h3 class="text-lg font-medium text-indigo-100 mb-2">Belum Dibaca</h3>
-              <p class="text-4xl font-bold">21</p>
-            </div>
-            <div class="p-4 bg-white/20 rounded-full z-10">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-             <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-white/10 rounded-full"></div>
-          </div>
-          <div class="bg-linear-to-br from-gray-700 to-gray-800 rounded-2xl p-6 shadow-lg text-white flex items-center relative overflow-hidden">
-            <div class="flex-1 z-1">
-              <h3 class="text-lg font-medium text-gray-300 mb-2">Total Arsip Masuk</h3>
-              <p class="text-4xl font-bold">49</p>
-            </div>
-            <div class="p-4 bg-white/20 rounded-full z-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-              </svg>
-            </div>
-             <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-white/10 rounded-full"></div>
+
+          <div v-if="recentDocs.length === 0" class="p-6 text-center text-gray-500 text-sm">
+            Belum ada dokumen yang diupload.
           </div>
         </div>
+      </div>
 
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-          <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-            <h3 class="text-xl font-bold text-gray-800">Surat Terbaru</h3>
-            <button class="text-sm text-blue-600 hover:underline font-medium">Lihat Semua</button>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left whitespace-nowrap">
-              <thead>
-                <tr class="text-gray-500 border-b border-gray-200 bg-gray-50/50 text-sm uppercase font-semibold">
-                  <th class="px-6 py-4">No</th>
-                  <th class="px-6 py-4">Nomor Surat</th>
-                  <th class="px-6 py-4">Pengirim</th>
-                  <th class="px-6 py-4">Tanggal</th>
-                  <th class="px-6 py-4 text-center">Status</th>
-                  <th class="px-6 py-4 text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr class="hover:bg-blue-50/50 transition-colors">
-                  <td class="px-6 py-5 font-medium text-gray-700">1</td>
-                  <td class="px-6 py-5 font-semibold text-blue-600">421/123/DPK</td>
-                  <td class="px-6 py-5 text-gray-600">Sekretariat</td>
-                  <td class="px-6 py-5 text-gray-600">20 Agustus 2025</td>
-                  <td class="px-6 py-5 text-center">
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 border border-yellow-200">
-                      Belum Diperiksa
-                    </span>
-                  </td>
-                  <td class="px-6 py-5 text-center">
-                    <div class="flex items-center justify-center space-x-3">
-                      <button class="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors" title="Lihat Detail">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      </button>
-                      <button class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors" title="Hapus">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="hover:bg-blue-50/50 transition-colors">
-                  <td class="px-6 py-5 font-medium text-gray-700">2</td>
-                  <td class="px-6 py-5 font-semibold text-blue-600">421/124/DPK</td>
-                  <td class="px-6 py-5 text-gray-600">Sekretariat</td>
-                  <td class="px-6 py-5 text-gray-600">20 Agustus 2025</td>
-                  <td class="px-6 py-5 text-center">
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
-                      Diterima
-                    </span>
-                  </td>
-                  <td class="px-6 py-5 text-center">
-                    <div class="flex items-center justify-center space-x-3">
-                       <button class="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition-colors" title="Lihat Detail">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      </button>
-                      <button class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors" title="Hapus">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                
-              </tbody>
-            </table>
-          </div>
-           <div class="p-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500 bg-gray-50">
-            <span>Menampilkan 1-2 dari 4 data</span>
-            <div class="flex space-x-2">
-              <button class="px-3 py-1 rounded border bg-white hover:bg-gray-100 disabled:opacity-50">Prev</button>
-              <button class="px-3 py-1 rounded border bg-blue-600 text-white font-bold">1</button>
-              <button class="px-3 py-1 rounded border bg-white hover:bg-gray-100">2</button>
-              <button class="px-3 py-1 rounded border bg-white hover:bg-gray-100">Next</button>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-gray-800 mb-6">Distribusi Dokumen</h3>
+        
+        <div class="space-y-4">
+          <div v-for="(count, category) in categoryBreakdown" :key="category">
+            <div class="flex justify-between text-xs font-bold text-gray-600 mb-1">
+              <span>{{ category }}</span>
+              <span>{{ count }} File</span>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-2">
+              <div 
+                class="bg-blue-600 h-2 rounded-full" 
+                :style="{ width: calculatePercent(count) + '%' }"
+              ></div>
             </div>
           </div>
         </div>
 
-      </main>
+        <div class="mt-8 p-4 bg-yellow-50 rounded-lg border border-yellow-100">
+           <h4 class="text-yellow-800 font-bold text-sm mb-1">💡 Tips Admin</h4>
+           <p class="text-yellow-700 text-xs leading-relaxed">
+             Pastikan untuk selalu mengisi "Nomor Naskah" dengan benar agar fitur pencarian dapat bekerja maksimal.
+           </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
 </template>
+
+<script setup>
+import { ref, onMounted, reactive } from 'vue'
+import { supabase } from '../supabase'
+
+const userEmail = ref('Admin')
+const currentDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+const loading = ref(true)
+
+const recentDocs = ref([])
+const stats = reactive({
+  total: 0,
+  thisMonth: 0,
+  categories: 0
+})
+const categoryBreakdown = ref({}) // Object like { 'Surat Keputusan': 5, 'Nota': 2 }
+
+onMounted(async () => {
+  // 1. Get User Info
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) userEmail.value = user.email.split('@')[0] // Just show name part
+
+  await fetchDashboardData()
+})
+
+async function fetchDashboardData() {
+  try {
+    loading.value = true
+    
+    // 1. Fetch ALL docs (needed for stats calculation)
+    // Note: If you have 10,000+ docs, you should use .count() queries instead of fetching all data.
+    // For a prototype/small archive, fetching metadata is fine.
+    const { data: allDocs, error } = await supabase
+      .from('documents_table')
+      .select('id, nama_naskah, nomor_naskah, jenis_naskah, created_at')
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+
+    if (allDocs) {
+      // A. Recent Docs (Take top 5)
+      recentDocs.value = allDocs.slice(0, 5)
+
+      // B. Calculate Stats
+      stats.total = allDocs.length
+      
+      const now = new Date()
+      const thisMonth = allDocs.filter(d => {
+        const dDate = new Date(d.created_at)
+        return dDate.getMonth() === now.getMonth() && dDate.getFullYear() === now.getFullYear()
+      })
+      stats.thisMonth = thisMonth.length
+
+      // C. Category Breakdown
+      const cats = {}
+      allDocs.forEach(d => {
+        const c = d.jenis_naskah || 'Uncategorized'
+        cats[c] = (cats[c] || 0) + 1
+      })
+      categoryBreakdown.value = cats
+      stats.categories = Object.keys(cats).length
+    }
+
+  } catch (err) {
+    console.error("Dashboard error:", err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// Helper: Calculate percentage for progress bars
+function calculatePercent(count) {
+  if (stats.total === 0) return 0
+  return Math.round((count / stats.total) * 100)
+}
+
+// Helper: "2 hours ago", "5 mins ago"
+function timeAgo(dateString) {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  const now = new Date()
+  const seconds = Math.floor((now - date) / 1000)
+  
+  let interval = seconds / 31536000
+  if (interval > 1) return Math.floor(interval) + " tahun lalu"
+  interval = seconds / 2592000
+  if (interval > 1) return Math.floor(interval) + " bulan lalu"
+  interval = seconds / 86400
+  if (interval > 1) return Math.floor(interval) + " hari lalu"
+  interval = seconds / 3600
+  if (interval > 1) return Math.floor(interval) + " jam lalu"
+  interval = seconds / 60
+  if (interval > 1) return Math.floor(interval) + " menit lalu"
+  return "Baru saja"
+}
+</script>
+
+<style scoped>
+@reference "tailwindcss";
+.animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>

@@ -45,10 +45,10 @@
             <button @click="switchPage('Dokumen')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Dokumen' }">
               <span class="w-1.5 h-1.5 bg-current rounded-full mr-3"></span> Daftar Dokumen
             </button>
-            <button @click="switchPage('Kependudukan')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Kependudukan' }">
-              <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"></span> Adm. Kependudukan
+            <button @click="switchPage('Ubah Dokumen')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Ubah Dokumen' }">
+              <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"></span> Ubah Dokumen
             </button>
-            <button @click="switchPage('Pemerintah')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Pemerintah' }">
+            <!-- <button @click="switchPage('Pemerintah')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Pemerintah' }">
               <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"></span> Adm. Pemerintahan
             </button>
             <button @click="switchPage('Keuangan')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Keuangan' }">
@@ -68,7 +68,7 @@
             </button>
             <button @click="switchPage('Aduan')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Aduan' }">
               <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"></span> Pengaduan dan Pelayanan Publik
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -89,9 +89,9 @@
             <button @click="switchPage('Unggah')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === 'Unggah' }">
               <span class="w-1.5 h-1.5 bg-current rounded-full mr-3"></span> Unggah File
             </button>
-            <button @click="switchPage('???')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === '???' }">
+            <!-- <button @click="switchPage('???')" class="text-start ps-3 sub-nav-item w-full" :class="{ 'text-blue-300 font-bold': currentPage === '???' }">
               <span class="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"></span> ????
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -107,7 +107,7 @@
       </nav>
 
       <div class="p-3 border-t border-gray-700">
-        <button v-on:click="logout" class="flex items-center p-3 rounded-lg text-red-300 hover:bg-red-500/20 hover:text-red-100 transition-colors duration-200 group">
+        <button v-on:click="handleLogout" class="flex items-center p-3 rounded-lg text-red-300 hover:bg-red-500/20 hover:text-red-100 transition-colors duration-200 group">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
@@ -128,82 +128,75 @@
         </div>
 
         <div class="flex items-center space-x-6">
-          <div class="flex rounded-full bg-gray-100 p-1 shadow-inner">
-            <select class="bg-transparent text-sm text-gray-600 py-2 pl-4 pr-2 rounded-l-full focus:outline-none">
-              <option>All Files</option>
-            </select>
-            <input type="text" placeholder="Search..." class="bg-white text-sm w-48 lg:w-64 py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm">
-          </div>
-          <button class="relative text-gray-500 hover:text-blue-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-            <!-- TODO: When we have notification this red thing turn on -->
-            <span class="absolute top-1 right-1 h-3 w-3 bg-red-500 rounded-full ring-2 ring-white"></span>
-          </button>
+
+          
           
           <div class="relative inline-block text-left" ref="dropdownContainer">
     
-    <button 
-      @click="toggleDropdown"
-      type="button"
-    >
-      <div class="h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg cursor-pointer hover:bg-blue-300 transition-colors">
-        <span>A</span>
-      </div>
-    </button>
-
-    <Transition
-      enter-active-class="transition ease-out duration-100"
-      enter-from-class="transform opacity-0 scale-95"
-      enter-to-class="transform opacity-100 scale-100"
-      leave-active-class="transition ease-in duration-75"
-      leave-from-class="transform opacity-100 scale-100"
-      leave-to-class="transform opacity-0 scale-95"
-    >
-      <div 
-        v-if="isOpen"
-        class="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-white/10 focus:outline-none py-1"
-        role="menu"
-        aria-orientation="vertical"
-        tabindex="-1"
-      >
-        <a 
-          href="#" 
-          class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
-          role="menuitem"
-        >
-          Account settings
-        </a>
-
-        <a 
-          href="#" 
-          class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
-          role="menuitem"
-        >
-          Support
-        </a>
-
-        <a 
-          href="#" 
-          class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
-          role="menuitem"
-        >
-          License
-        </a>
-
-        <form method="POST" action="#">
           <button 
-            type="submit" 
-            class="block w-full px-4 py-2 text-left text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
-            role="menuitem"
+            @click="toggleDropdown"
+            type="button"
           >
-            Sign out
+            <div class="h-10 w-10 bg-blue-200 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg cursor-pointer hover:bg-blue-300 transition-colors">
+              <span v-if="!userPP && !userPPLink">{{ userEmail.charAt(0) }}</span>
+              <img class="h-full w-full rounded-full object-contain" v-if="userPP && userPPLink" v-bind:src="userPPLink"></img>
+            </div>
           </button>
-        </form>
-      </div>
-    </Transition>
-  </div>
+          
+
+          <Transition
+            enter-active-class="transition ease-out duration-100"
+            enter-from-class="transform opacity-0 scale-95"
+            enter-to-class="transform opacity-100 scale-100"
+            leave-active-class="transition ease-in duration-75"
+            leave-from-class="transform opacity-100 scale-100"
+            leave-to-class="transform opacity-0 scale-95"
+          >
+            <div 
+              v-if="isOpen"
+              class="absolute right-0 mt-2 w-fill origin-top-right rounded-md bg-gray-800 shadow-lg ring-1 ring-white/10 focus:outline-none py-1"
+              role="menu"
+              aria-orientation="vertical"
+              tabindex="-1"
+            >
+              <a 
+                href="#" 
+                class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
+                role="menuitem"
+                @click="switchPage('Profile')"
+              >
+                {{ userEmail }}
+              </a>
+
+              <a 
+                href="#" 
+                class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
+                role="menuitem"
+              >
+                Support
+              </a>
+
+              <a 
+                href="#" 
+                class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
+                role="menuitem"
+              >
+                License
+              </a>
+
+              
+              <button 
+                type="submit" 
+                class="block w-full px-4 py-2 text-left text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors" 
+                role="menuitem"
+                @click="handleLogout"
+              >
+                Sign out
+              </button>
+              
+            </div>
+          </Transition>
+        </div>
 
         </div>
       </header>
@@ -213,27 +206,111 @@
           <Beranda></Beranda>
         </div>
         <div v-if="currentPage === 'Dokumen' && isDropdownOpen">
-          <Dokumen></Dokumen>
+          <Dokumen @edit="handleEditRequest"></Dokumen>
         </div>
         <div v-if="currentPage === 'Unggah' && isDropdownOpen">
-          
+          <UnggahFile></UnggahFile>
+        </div>
+        <div v-if="currentPage === 'Profile'">
+          <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8">
+            <div class="flex flex-col md:flex-row gap-8">
+              
+              <div class="flex flex-col items-center space-y-4 md:w-1/3 border-r border-gray-100 pr-4">
+                <div class="relative group">
+                  <img 
+                    :src="profile.avatar_url || 'https://via.placeholder.com/150'" 
+                    class="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
+                    :class="{ 'opacity-50': uploading }"
+                  />
+                  
+                  <div v-if="uploading" class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-blue-600 font-bold text-sm">Uploading...</span>
+                  </div>
+                </div>
+
+                <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-100 transition">
+                  Change Photo
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    class="hidden" 
+                    @change="handleAvatarUpload"
+                    :disabled="uploading"
+                  />
+                </label>
+                <p class="text-xs text-gray-400">Allowed *.jpeg, *.jpg, *.png, *.gif</p>
+              </div>
+
+
+              <div class="flex-1">
+                
+
+                <div v-if="!isEditing" class="space-y-6">
+                  <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Full Name</label>
+                    <p class="text-lg font-medium text-gray-800">{{ profile.full_name || 'Not set' }}</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Email Address</label>
+                    <p class="text-lg font-medium text-gray-800">{{ profile.email }}</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Phone Number</label>
+                    <p class="text-lg font-medium text-gray-800">{{ profile.phone }}</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date of Birth</label>
+                    <p class="text-lg font-medium text-gray-800">{{ profile.date_birth }}</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">NIP</label>
+                    <p class="text-lg font-medium text-gray-800">{{ profile.nip }}</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Role</label>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {{ profile.role }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="currentPage === 'Ubah Dokumen'">
+          <UbahDokumen 
+            :id="selectedDocId" 
+            @cancel="switchPage('Dokumen')"
+            @saved="switchPage('Dokumen')"
+          ></UbahDokumen>
+        </div>
+        <div v-if="currentPage === 'Daftar'">
+          <AddUser></AddUser>
         </div>
       </main>
     </div>
   </div>
 </template>
 
+
+
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, reactive, onUnmounted } from 'vue';
+import { supabase } from '../supabase';
 import { useRouter } from 'vue-router'
 import Beranda from '../components/Beranda.vue';
 import Dokumen from '../components/Dokumen.vue';
+import UnggahFile from '../components/UnggahFile.vue';
+import UbahDokumen from '../components/UbahDokumen.vue';
+import AddUser from '../components/AddUser.vue';
 
 const router = useRouter()
-const logout = () => {
-  console.log("Logged out!")
-  router.push('/')
-}
+
 // --- STATE VARIABLES ---
 // This acts as your "Booleans". 
 // 'beranda' = true means Beranda shows.
@@ -246,6 +323,28 @@ const isSidebarOpen = ref(true)
 const isDocDropdownOpen = ref(false)
 const isUnggahDropdownOpen = ref(false)
 const isDropdownOpen = ref(false)
+const userEmail = ref('')
+const userPP = ref(false)
+const userUID = ref('')
+const userPPLink = ref('');
+const selectedDocId = ref(null)
+
+const uploading = ref(false)
+const saving = ref(false)
+const isEditing = ref(false)
+
+const profile = reactive({
+  id: '',
+  email: '',
+  full_name: '',
+  role: '',
+  avatar_url: '',
+  phone: '',
+  date_birth: '',
+  nip: ''
+})
+
+const form = reactive({ full_name: '' })
 
 // --- DATA ---
 const documentsData = [
@@ -263,6 +362,19 @@ const toggleSidebar = () => {
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value
+}
+
+const handleLogout = async () => {
+  // 1. Sign out from Supabase
+  await supabase.auth.signOut()
+  
+  // 2. Push user back to the login screen
+  router.push('/auth')
+}
+
+const handleEditRequest = (id) => {
+  selectedDocId.value = id     // 1. Hold the ticket
+  switchPage('Ubah Dokumen')   // 2. Switch the room
 }
 
 const toggleDocDropdown = () => {
@@ -300,8 +412,78 @@ const closeOnClickOutside = (event) => {
   }
 }
 
+// 2. Toggle Edit Mode
+const toggleEdit = () => {
+  if (!isEditing.value) {
+    // Copy current data to form buffer when opening edit
+    form.full_name = profile.full_name
+  }
+  isEditing.value = !isEditing.value
+}
+
+// 3. Update Text Info
+const updateProfile = async () => {
+  try {
+    saving.value = true
+    
+    const { error } = await supabase
+      .from('profiles')
+      .update({ full_name: form.full_name })
+      .eq('id', profile.id)
+
+    if (error) throw error
+
+    // Update local view
+    profile.full_name = form.full_name
+    isEditing.value = false // Close form
+    alert('Profile updated successfully!')
+
+  } catch (error) {
+    alert('Error updating profile: ' + error.message)
+  } finally {
+    saving.value = false
+  }
+}
+
+
 // --- EVENTS ---
-onMounted(() => {
+onMounted(async () => {
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  // 2. Assign the email to your variable
+  if (user) {
+    userEmail.value = user.email
+    userUID.value = user.id
+
+    try{
+      const path_to_image = "/pp_" + userUID.value + ".jpeg"
+      const {data:image_url} = supabase.storage.from("profile_picture").getPublicUrl(path_to_image)
+      userPPLink.value = image_url.publicUrl;
+      console.log(image_url);
+      userPP.value = true;
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_uid', user.id)
+        .single()
+
+      if (error) throw error
+
+      if (data) {
+        profile.full_name = data.name
+        profile.role = data.role ? 'Admin' : 'User'
+        profile.avatar_url = userPPLink
+        profile.email = userEmail
+        profile.id = userUID
+        profile.phone = data.phone
+        profile.date_birth = data.date_birth
+        profile.nip = data.nip
+      }
+    }catch(error){
+      userPP.value = false;
+    }
+  }
   window.addEventListener('click', closeOnClickOutside)
 })
 
