@@ -1,150 +1,134 @@
 <template>
-  <div class="min-h-screen w-full flex flex-col md:flex-row overflow-x-hidden overflow-y-hidden m-0 p-0">
+  <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
     
-    <div class="w-full md:w-7/12 bg-[#B4CDEB] flex flex-col items-center relative p-6 md:p-12 justify-center">
+    <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px]">
       
-      <div class="flex items-start justify-center space-x-4 w-full max-w-2xl mb-8 md:mb-16">
-        <div class="w-12 h-12 md:w-16 md:h-16 bg-gray-300 rounded-full shrink-0 flex items-center justify-center text-[10px] text-gray-500">Logo 1</div>
+      <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
         
-        <div class="text-center">
-          <h1 class="text-xl md:text-3xl font-bold text-[#1E3A5F]">Kelurahan Kedoya Selatan</h1>
-          <p class="text-xs md:text-sm text-[#3E5A7F] mt-1">Kecamatan Kebon Jeruk, Kota Administrasi Jakarta Barat</p>
+        <div class="absolute top-8 left-8 flex space-x-4">
+           <img :src="JakartaIcon" alt="Logo Jakarta" class="h-16 w-auto object-contain">
+           
+           <img :src="KedoyaIcon" alt="Logo Kedoya" class="h-16 w-auto object-contain">
         </div>
-        
-        <div class="w-12 h-12 md:w-16 md:h-16 bg-gray-300 rounded-full shrink-0 flex items-center justify-center text-[10px] text-gray-500">Logo 2</div>
-      </div>
 
-      <h2 class="text-3xl md:text-5xl font-extrabold text-[#1E3A5F] mb-8 md:mb-16 text-center">SI PENDIK</h2>
+        <div class="mt-16 mb-8">
+          <h1 class="text-3xl font-extrabold text-gray-800 mb-2">Selamat Datang</h1>
+          <p class="text-gray-500">Silahkan masuk untuk mengakses Sistem Arsip Digital.</p>
+        </div>
 
-      <div class="w-full max-w-sm aspect-video bg-white/30 rounded-xl border-2 border-white/50 flex items-center justify-center">
-        <span class="text-[#3E5A7F] font-medium">Illustration Placeholder</span>
-      </div>
-    </div>
-
-    <div class="w-full md:w-5/12 bg-[#5578AC] flex flex-col justify-center items-center p-8 md:p-12 text-white shadow-2xl z-10">
-      
-      <div class="w-full max-w-sm">
-        <h2 class="text-4xl font-bold text-center mb-10">{{ resetPassword ? "Reset Password" : "Login" }}</h2>
-
-        <form @submit.prevent="handleLogin">
-          <div class="mb-5 relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+        <form @submit.prevent="handleLogin" class="space-y-6">
+          
+          <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" /></svg>
+              </span>
+              <input 
+                v-model="email" 
+                type="email" 
+                placeholder="nama@kedoyaselatan.go.id" 
+                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
+                required
+              >
             </div>
-            <input 
-              type="email" 
-              v-model="username"
-              placeholder="Email" 
-              class="w-full py-4 pl-12 pr-4 bg-white rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8AA6CF] shadow-md"
-            />
           </div>
 
-          <div v-if="!resetPassword" class="mb-5 relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+          <div>
+             <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+             <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              </span>
+              <input 
+                v-model="password" 
+                type="password" 
+                placeholder="••••••••" 
+                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
+                required
+              >
             </div>
-            <input 
-            v-model="password"
-              type="password" 
-              placeholder="Password" 
-              class="w-full py-4 pl-12 pr-4 bg-white rounded-2xl text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8AA6CF] shadow-md"
-            />
           </div>
 
-          <div v-if="errorMessage" class="text-red-500 text-sm text-center">
-            {{ errorMessage }}
+          <div v-if="errorMsg" class="bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-100 flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            {{ errorMsg }}
           </div>
 
-          <div v-if="message && !errorMessage && resetPassword" class=" text-green-300 text-[0.9rem] text-center">
-            {{ message }}
-          </div>
-
-          <div class="flex items-center justify-between mb-8 text-sm">
-            <!-- <label class="flex items-center cursor-pointer select-none">
-              <div class="relative">
-                <input type="checkbox" class="sr-only" v-model="rememberMe" />
-                <div class="block w-10 h-6 rounded-full transition-colors duration-300" :class="{ 'bg-blue-300': rememberMe, 'bg-gray-300' : !rememberMe }"></div>
-                <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-300" :class="{ 'translate-x-4': rememberMe }"></div>
-              </div>
-              <span class="ml-3 font-medium">Remember me</span>
-            </label> -->
-            <a href="#" @click="resetPW" class="hover:text-blue-200 transition-colors">{{ resetPassword ? "Kembali ke Login" : "Forget Password" }}</a>
-          </div>
-
-          <button v-if="!loadingLogin" type="submit" class="w-full py-3.5 bg-[#96B5DE] rounded-full text-xl font-bold text-[#1E3A5F] shadow-lg hover:bg-[#A6C3E9] transform active:scale-95 transition-all duration-200">
-            {{ resetPassword ? "Reset Password" : "Sign In" }}
+          <button 
+            type="submit" 
+            :disabled="loading"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-200 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ loading ? 'Memproses...' : 'Masuk ke Dashboard' }}
           </button>
 
         </form>
+
+        <div class="mt-8 text-center text-xs text-gray-400">
+          &copy; 2026 Kelurahan Kedoya Selatan. All rights reserved.
+        </div>
       </div>
+
+      <div class="hidden md:flex w-1/2 bg-blue-600 items-center justify-center p-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-blue-600 opacity-90 z-10"></div>
+        <img :src="Placeholder" alt="Background Office" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-50">
+        
+        <div class="relative z-20 text-center text-white">
+            <h2 class="text-4xl font-bold mb-4">Efisiensi Arsip</h2>
+            <p class="text-blue-100 text-lg mb-8">Kelola surat masuk, keluar, dan dokumen penting dalam satu pintu digital.</p>
+            
+            </div>
+        
+        <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-white opacity-10 rounded-full z-0"></div>
+        <div class="absolute -top-24 -left-24 w-64 h-64 bg-white opacity-10 rounded-full z-0"></div>
+      </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { supabase } from '../supabase'
 import { useRouter } from 'vue-router'
-import { logActivity } from '../utils/logger'
-
-const username = ref('')
-const password = ref('')
-const errorMessage = ref('')
-const message = ref('')
-const loadingLogin = ref(false)
-const resetPassword = ref(false)
-
-const rememberMe = ref(false)
+import { supabase } from '../supabase'
+import { logActivity } from '../utils/logger' // Ensure you import the logger
+import JakartaIcon from '../assets/Jakarta.jpeg'
+import KedoyaIcon from '../assets/Kedoya.jpeg'
+import Placeholder from '../assets/placeholder.jpeg'
 const router = useRouter()
-const resetPW = () => {
-  resetPassword.value = !resetPassword.value;
-  message.value = null;
-}
+const email = ref('')
+const password = ref('')
+const loading = ref(false)
+const errorMsg = ref('')
+
 const handleLogin = async () => {
-  try{
-    loadingLogin.value=true;
-    if (!resetPassword.value) {
-      console.log("Login-in");
-      const { error } = await supabase.auth.signInWithPassword({
-        email: username.value,
-        password: password.value
-      })
-      if (error) throw error
-      await logActivity('LOGIN', 'User logged into the system')
-      // If successful, go to dashboard
-      router.push('/')
-    }else{
-      console.log("Reset-in");
-      const { error } = await supabase.auth.resetPasswordForEmail(username.value);
-      if (error) alert(error.message)
-      else message.value = "Link reset sudah dikirim ke email anda jika anda mendaftar menggunakan email tersebut, silahkan dicek kembali"
+  loading.value = true
+  errorMsg.value = ''
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+
+    if (error) throw error
+    
+    // Log the successful login
+    // Note: data.user exists if login is successful
+    if (data?.user) {
+        // We log slightly differently here because we might not have the user session 
+        // fully set in the global state yet, but data.user has the info we need.
+        // However, our logger uses getUser(), which should work immediately after signIn.
+        await logActivity('LOGIN', 'User successfully logged in')
     }
-  }catch(error){
-    errorMessage.value = error.message
-  }finally{
-    loadingLogin.value = false;
+
+    router.push('/')
+
+  } catch (error) {
+    errorMsg.value = 'Login Gagal: ' + error.message
+  } finally {
+    loading.value = false
   }
 }
 </script>
-
-<style>
-/* CRITICAL: This Global Reset removes the "Black/Gray Box" 
-   caused by default browser margins.
-*/
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-#app {
-  width: 100%;
-  height: 100%;
-}
-</style>

@@ -225,7 +225,7 @@ const handleFileUpload = async (event) => {
     formData.append('file', file)
 
     // Ensure your Python API is running on this port
-    const response = await fetch('http://localhost:5000/scan-to-pdf', {
+    const response = await fetch('https://api.sipendik.web.id/scan-to-pdf', {
       method: 'POST',
       body: formData
     })

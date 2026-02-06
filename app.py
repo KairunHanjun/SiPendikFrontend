@@ -9,7 +9,14 @@ app = Flask(__name__)
 CORS(app)
 
 # OPTIONAL: Set Tesseract path for Windows
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+import platform
+
+# Termux is Linux-based, so this check works
+if platform.system() == "Windows":
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+else:
+    # On Termux, it's usually here, or just 'tesseract' works automatically
+    pytesseract.pytesseract.tesseract_cmd = '/data/data/com.termux/files/usr/bin/tesseract'
 
 # CONFIGURATION
 SUPABASE_URL = "https://vtlusodnxzwanjjjboct.supabase.co"

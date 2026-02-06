@@ -349,7 +349,7 @@ async function createUser() {
   errorMsg.value = ''
 
   try {
-    const response = await fetch('http://localhost:5000/admin/create-user', {
+    const response = await fetch('https://api.sipendik.web.id/admin/create-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form)
@@ -374,7 +374,7 @@ async function deleteUser(user) {
   if (!confirm(`Are you sure you want to delete ${user.name}?`)) return
 
   try {
-    const response = await fetch('http://localhost:5000/admin/delete-user', {
+    const response = await fetch('https://api.sipendik.web.id/admin/delete-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_uid: user.user_uid }) // NOTE: CSV uses 'user_uid'
