@@ -206,7 +206,7 @@
           <Beranda></Beranda>
         </div>
         <div v-if="currentPage === 'Dokumen' && isDropdownOpen">
-          <Dokumen @edit="handleEditRequest"></Dokumen>
+          <Dokumen @edit="handleEditRequest" :profile="profile"></Dokumen>
         </div>
         <div v-if="currentPage === 'Unggah' && isDropdownOpen">
           <UnggahFile></UnggahFile>

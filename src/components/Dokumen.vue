@@ -116,7 +116,7 @@
                           </a>
                           <a v-if="doc.original_image_url" href="#" @click.prevent="downloadFile(doc.original_image_url)" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 text-xs flex items-center"><svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> Original Image</a>
                           <a v-if="doc.ocr_pdf_url" href="#" @click.prevent="downloadFile(doc.ocr_pdf_url)" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 text-xs flex items-center"><svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg> OCR PDF</a>
-                          <a href="#" @click.prevent="deleteDokumen(doc)" class="block px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-800 text-xs flex items-center border-t border-gray-100"><svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Delete</a>
+                          <a v-if="profile && profile.role == 'Admin'" href="#" @click.prevent="deleteDokumen(doc)" class="block px-4 py-2 text-red-600 hover:bg-red-50 hover:text-red-800 text-xs flex items-center border-t border-gray-100"><svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Delete</a>
                       </div>
                     </details>
                   </td>
@@ -145,6 +145,7 @@ import { supabase } from '../supabase'
 import { logActivity } from '../utils/logger'
 
 const emit = defineEmits(['edit'])
+const profile = defineProps(['profile'])
 
 // --- SEARCH & SORT STATE ---
 const searchQuery = ref('')
@@ -245,7 +246,8 @@ const deleteDokumen = async (doc) => {
     if (pdfPath) filesToRemove.push(pdfPath)
 
     if (filesToRemove.length > 0) {
-      await supabase.storage.from('document').remove(filesToRemove)
+      const return_data = await supabase.storage.from('document').remove(filesToRemove)
+      if (return_data.error) throw return_data.error
     }
     const { error } = await supabase.from('documents_table').delete().eq('id', doc.id)
     if (error) throw error
@@ -253,6 +255,7 @@ const deleteDokumen = async (doc) => {
     // Refresh to update pagination counts correctly
     fetchDocuments()
     alert('Deleted successfully')
+    // Add Log to it
     await logActivity('DELETE', `Deleted document: ${doc.nama_naskah}`)
   } catch (error) {
     alert('Error deleting: ' + error.message)
